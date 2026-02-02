@@ -15,7 +15,7 @@ mkdir -p /etc/nginx/ssl
 #	-subj: cert subject metadata, Country, State, Locality, Org, Common Name
 
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/key.out \
--out /etc/nginx/ssl/cert.pem -subj "/C=SG/ST=TJPG/L=MyRoom/O=42/CN=${DOMAIN_NAME:-localhost}"
+-out /etc/nginx/ssl/cert.pem -subj "/C=SG/ST=TJPG/L=MyRoom/O=42/CN=${DOMAIN_NAME}"
 
 # Print cert generated
 echo "Self-signed cert created at /etc/nginx/ssl"
