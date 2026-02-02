@@ -5,6 +5,11 @@
 
 
 
+PID 1
+- each container only has 1 process tree
+- usually you'll want to run a long running service like NGINX or php-fpm as PID 1
+
+
 
 
 

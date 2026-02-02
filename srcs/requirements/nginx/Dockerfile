@@ -1,11 +1,20 @@
+# Start from Debian base (mj to check the version later)
+FROM debian:trixie
 
+# Install NGINX and OpenSSL. apt clean to clear all the cached installation files
+RUN apt update && apt install -y nginx openssl && apt clean
 
+# Copy configuration files
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 
+# Copy setup script for SSL and nginx launch
+COPY tools/setup.sh /setup.sh
 
+# Make setup script executable
+RUN chmod +x /setup.sh
 
-# some instructions for the nginx
-# ......
+# Expose only port 443 for HTTPS
+EXPOSE 443
 
-
-
-# docker image build -t nginx_image srcs/requirements/nginx
+# Run setup and nginx as PID 1
+CMD ["/setup.sh"]
