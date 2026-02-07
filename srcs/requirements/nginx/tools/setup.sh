@@ -23,4 +23,4 @@ echo "Self-signed cert created at /etc/nginx/ssl"
 # Launch nginx in foreground (PID 1)
 # -g: global directive to keep nginx running in foreground so that it becomes PID 1 in the container
 # daemon off: disables daemon mode
-nginx -g 'daemon off;'
+exec nginx -g 'daemon off;'
