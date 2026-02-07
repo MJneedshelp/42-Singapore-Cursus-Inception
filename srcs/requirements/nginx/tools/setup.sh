@@ -14,7 +14,7 @@ mkdir -p /etc/nginx/ssl
 #	-out: location to save the cert
 #	-subj: cert subject metadata, Country, State, Locality, Org, Common Name
 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/key.out \
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/key.pem \
 -out /etc/nginx/ssl/cert.pem -subj "/C=SG/ST=TJPG/L=MyRoom/O=42/CN=${DOMAIN_NAME}"
 
 # Print cert generated
