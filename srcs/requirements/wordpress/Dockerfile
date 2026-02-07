@@ -15,3 +15,10 @@ EXPOSE 9000
 
 # mj to fill in later
 CMD ["/start.sh"]
+
+
+
+
+
+
+#mj to check if there's a need to login to wordpress client

@@ -1,5 +1,7 @@
 #!/bin/sh
 
-# mj to adjust later
-php-fpm7.4 -F
+PHP_VERSION="$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')"
+PHP_FPM_BIN="php-fpm${PHP_VERSION}"
 
+# mj to adjust later
+$PHP_FPM_BIN -F
