@@ -10,6 +10,9 @@ COPY tools/start.sh /start.sh
 # Make setup script executable
 RUN chmod +x /start.sh
 
+# Configure php-fpm to listen on port 9000 instead of the default socket file
+RUN sed -i 's|^listen = .*|listen = 9000|' /etc/php/*/fpm/pool.d/www.conf
+
 # Expose only port 9000 for communicating with the NGINX container
 EXPOSE 9000
 
