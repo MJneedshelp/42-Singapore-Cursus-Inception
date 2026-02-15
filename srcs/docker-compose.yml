@@ -75,6 +75,7 @@ volumes:
       device: /home/${USER}/data/wordpress_db
       o: bind
 
+# MJ: update the filepaths later when you transfer environments
 secrets:
   db_password:
     file: ../secrets/db_password.txt
