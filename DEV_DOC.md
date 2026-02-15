@@ -13,5 +13,7 @@ PID 1
 
 
 
-
+Source:
+- https://www.docker.com/blog/docker-best-practices-choosing-between-run-cmd-and-entrypoint/
+- Installing wp-cli: https://wp-cli.org/#installing
 

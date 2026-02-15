@@ -2,6 +2,7 @@
 FROM debian:trixie
 
 # Install NGINX and OpenSSL. apt clean to clear all the cached installation files
+# Shell form used instead of exec form cos of && for variable expansion. Reduce layers
 RUN apt update && apt install -y nginx openssl && apt clean
 
 # Copy configuration files

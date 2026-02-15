@@ -5,7 +5,7 @@ COMPOSE_FILE = srcs/docker-compose.yml
 .DEFAULT_GOAL := all
 
 # Build the images + start containers
-all: build up print_art
+all: build up print_art_alive
 	@echo '$(START_MESSAGE)'
 
 # Build the docker images
@@ -18,8 +18,9 @@ up:
 	$(COMPOSE) -f $(COMPOSE_FILE) up -d
 
 # Remove containers + networks but preserve the volumes
-down:
+down: print_art_dead
 	$(COMPOSE) -f $(COMPOSE_FILE) down
+
 
 # Stop running the containers without removing them. Think "pause"
 stop:
@@ -36,12 +37,20 @@ fclean:
 # fclean then make all
 re: fclean all
 
-print_art:
+print_art_alive:
 	@echo "       ."
 	@echo "      \":\""
 	@echo "    ___:____     |\"\\/\"|"
 	@echo "  ,'        \`.    \\  /"
 	@echo "  |  O        \\___/  |"
+	@echo "~^~^~^~^~^~^~^~^~^~^~^~^~"
+
+print_art_dead:
+	@echo "       ."
+	@echo "      \":\""
+	@echo "    ___:____     |\"\\/\"|"
+	@echo "  ,'        \`.    \\  /"
+	@echo "  |  X        \\___/  |"
 	@echo "~^~^~^~^~^~^~^~^~^~^~^~^~"
 
 help:
@@ -53,4 +62,4 @@ help:
 	@echo "make fclean	→ remove containers + volumes + images"
 	@echo "make re		→ fclean + all"
 
-.PHONY: all build up down stop clean fclean re print_art help
+.PHONY: all build up down stop clean fclean re print_art_alive print_art_dead help

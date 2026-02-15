@@ -4,8 +4,6 @@
   #volumes      -> persist data and share between services
   #environment  -> configure services with env variables -> probably reads from the .env file
 
-  #docker compose up    -> to start
-  #docker compose down  -> to stop
 
 # Container definitions
 services:
