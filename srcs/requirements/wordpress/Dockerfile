@@ -17,9 +17,9 @@ RUN mkdir -p /var/www/html
 
 WORKDIR /var/www/html
 
-RUN curl -O https://wordpress.org/latest.tar.gz \
-	&& tar -xzf latest.tar.gz --strip-components=1 \
-	&& rm latest.tar.gz
+# RUN curl -O https://wordpress.org/latest.tar.gz \
+# 	&& tar -xzf latest.tar.gz --strip-components=1 \
+# 	&& rm latest.tar.gz
 
 # Download and install the wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \

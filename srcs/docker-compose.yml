@@ -30,9 +30,12 @@ services:
       - wordpress_db:/var/lib/mysql
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_HOST=mariadb
+      - WP_SITE_TITLE=${SITE_TITLE}
+      - WP_ADMIN_USER=${WP_ADMIN_USER}
+      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_HOST=mariadb
     secrets:
       - db_password
       - wp_admin_password
