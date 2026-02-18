@@ -16,4 +16,6 @@ PID 1
 Source:
 - https://www.docker.com/blog/docker-best-practices-choosing-between-run-cmd-and-entrypoint/
 - Installing wp-cli: https://wp-cli.org/#installing
+- Volumes vs bind mounts: https://docs.docker.com/reference/compose-file/volumes/
+
 

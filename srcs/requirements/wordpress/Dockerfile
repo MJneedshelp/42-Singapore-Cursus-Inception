@@ -17,10 +17,6 @@ RUN mkdir -p /var/www/html
 
 WORKDIR /var/www/html
 
-# RUN curl -O https://wordpress.org/latest.tar.gz \
-# 	&& tar -xzf latest.tar.gz --strip-components=1 \
-# 	&& rm latest.tar.gz
-
 # Download and install the wp-cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x wp-cli.phar \
@@ -29,7 +25,7 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 # Copy start up script
 COPY tools/start.sh /start.sh
 
-# Make setup script executable
+# Make start up script executable
 RUN chmod +x /start.sh
 
 # Expose only port 9000 for communicating with the NGINX container
