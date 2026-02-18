@@ -19,6 +19,12 @@ else
 	echo "WordPress core is already downloaded"
 fi
 
+# Wait for MariaDB to be up
+until mysqladmin ping -h "$DB_HOST" --silent; do
+	echo "Maria are you up..."
+	sleep 1
+done
+
 # Create wp-config.php if missing
 if [ ! -f wp-config.php ]; then
 	echo "Creating wp-config.php..."
@@ -29,12 +35,7 @@ if [ ! -f wp-config.php ]; then
 		--dbhost="$DB_HOST" \
 		--allow-root
 fi
-
-# Wait for MariaDB to be up
-until mysqladmin ping -h"$DB_HOST" --silent; do
-	echo "Maria are you up..."
-	sleep 1
-done
+echo "wp-config.php created"
 
 # Install WordPress if not installed
 if ! wp core is-installed --allow-root; then

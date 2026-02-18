@@ -1,6 +1,6 @@
 NAME=inception
 START_MESSAGE= $(NAME) is up. "An idea is like a virus"
-COMPOSE = docker compose
+COMPOSE = docker compose -p $(NAME)
 COMPOSE_FILE = srcs/docker-compose.yml
 .DEFAULT_GOAL := all
 
@@ -20,7 +20,6 @@ up:
 # Remove containers + networks but preserve the volumes
 down: print_art_dead
 	$(COMPOSE) -f $(COMPOSE_FILE) down
-
 
 # Stop running the containers without removing them. Think "pause"
 stop:
