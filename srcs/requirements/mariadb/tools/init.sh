@@ -4,20 +4,27 @@
 set -eu
 
 # Read the secrets
-DB_PASSWORD=$(cat /run/secrets/db_password)
-DB_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+DB_PASSWORD="$(tr -d '\r\n' < /run/secrets/db_password)"
+DB_ROOT_PASSWORD="$(tr -d '\r\n' < /run/secrets/db_root_password)"
 
-echo "before init"
-echo "Contents of /var/lib/mysql:"
-ls -l /var/lib/mysql || true
-
+# Make the mysqld directory
+echo "Making the directory: /run/mysqld"
+mkdir -p /run/mysqld
+chown mysql:mysql /run/mysqld
 
 # Initialise DB if it is not already initialised
 if [ ! -d "/var/lib/mysql/mysql" ]; then
 	echo "Initializing MariaDB..."
 
-	mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
+	mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 
+	# # Update the server config so that MariaDB accepts connections
+	# # from other containers
+	# if [ -f /etc/mysql/mariadb.conf.d/50-server.cnf ]; then
+	# 	sed -i 's/^[[:space:]]*bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf || true
+	# fi
+
+	echo "Starting temporary MariaDB server to create root users first"
 	mysqld --skip-networking --user=mysql &
 	pid="$!"
 
@@ -36,12 +43,9 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
 	mysql < /tmp/init_runtime.sql
 
-	mysqladmin -u root -p"${DB_ROOT_PASSWORD}" shutdown
+	# Wait for process to end
 	wait "$pid"
 fi
-
-mkdir -p /run/mysqld
-chown mysql:mysql /run/mysqld
 
 echo "Starting MariaDB normally..."
 exec mysqld --user=mysql

@@ -13,3 +13,6 @@ GRANT ALL PRIVILEGES ON __DB_NAME__.* TO '__DB_USER__'@'%';
 -- Refresh to apply the privileges. Technically don't need since GRANT will
 -- already apply the privileges immediately
 FLUSH PRIVILEGES;
+
+-- Shutdown
+SHUTDOWN;

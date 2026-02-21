@@ -7,6 +7,11 @@ RUN apt update && apt install -y \
 	mariadb-server mariadb-client \
 	&& apt clean && rm -rf /var/lib/apt/lists/*
 
+
+# Update the server config so that MariaDB accepts connections from other containers
+RUN sed -i 's/^[[:space:]]*bind-address.*/bind-address = 0.0.0.0/' \
+	/etc/mysql/mariadb.conf.d/50-server.cnf
+
 # Clear the
 RUN rm -rf /var/lib/mysql/*
 

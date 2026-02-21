@@ -4,8 +4,8 @@
 set -eu
 
 # Read the secrets
-DB_PASSWORD=$(cat /run/secrets/db_password)
-WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+DB_PASSWORD="$(tr -d '\r\n' < /run/secrets/db_password)"
+WP_ADMIN_PASSWORD="$(tr -d '\r\n' < /run/secrets/wp_admin_password)"
 
 cd /var/www/html
 
@@ -20,7 +20,11 @@ else
 fi
 
 # Wait for MariaDB to be up
-until mysqladmin ping -h "$DB_HOST" --silent; do
+until mysqladmin ping -h "$DB_HOST" \
+	-h"$DB_HOST" \
+	-u"$DB_USER" \
+	-p"$DB_PASSWORD" \
+	--silent; do
 	echo "Maria are you up..."
 	sleep 1
 done
