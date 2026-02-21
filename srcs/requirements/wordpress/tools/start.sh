@@ -4,8 +4,10 @@
 set -eu
 
 # Read the secrets
-DB_PASSWORD="$(tr -d '\r\n' < /run/secrets/db_password)"
-WP_ADMIN_PASSWORD="$(tr -d '\r\n' < /run/secrets/wp_admin_password)"
+read -r DB_PASSWORD < /run/secrets/db_password
+read -r WP_ADMIN_PASSWORD < /run/secrets/wp_admin_password
+
+printf '%s' "$DB_PASSWORD" | cat -A
 
 cd /var/www/html
 
@@ -20,7 +22,7 @@ else
 fi
 
 # Wait for MariaDB to be up
-until mysqladmin ping -h "$DB_HOST" \
+until mysqladmin ping \
 	-h"$DB_HOST" \
 	-u"$DB_USER" \
 	-p"$DB_PASSWORD" \

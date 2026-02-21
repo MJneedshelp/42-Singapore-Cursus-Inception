@@ -4,8 +4,13 @@
 set -eu
 
 # Read the secrets
-DB_PASSWORD="$(tr -d '\r\n' < /run/secrets/db_password)"
-DB_ROOT_PASSWORD="$(tr -d '\r\n' < /run/secrets/db_root_password)"
+
+read -r DB_PASSWORD < /run/secrets/db_password
+read -r DB_ROOT_PASSWORD < /run/secrets/db_root_password
+
+echo "DEBUG DB_ROOT_PASSWORD (visible form):"
+printf '%s' "$DB_ROOT_PASSWORD" | cat -A
+
 
 # Make the mysqld directory
 echo "Making the directory: /run/mysqld"
