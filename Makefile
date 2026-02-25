@@ -29,7 +29,7 @@ stop:
 clean:
 	$(COMPOSE) -f $(COMPOSE_FILE) down -v
 
-# Clean + remove images relkated to the project
+# Clean + remove images related to the project
 fclean:
 	$(COMPOSE) -f $(COMPOSE_FILE) down -v --rmi all --remove-orphans
 
