@@ -50,7 +50,7 @@ fclean:
 re: fclean all
 
 # Docker Compose Process Status
-ps:
+ps: print_art_ps
 	$(COMPOSE) ps
 
 print_art_alive:
@@ -68,6 +68,19 @@ print_art_dead:
 	@echo "  ,'        \`.    \\  /"
 	@echo "  |  X        \\___/  |"
 	@echo "~^~^~^~^~^~^~^~^~^~^~^~^~"
+
+print_art_ps:
+	@echo "            ~     ~"
+	@echo "       .        ~"
+	@echo "      \":\""
+	@echo "    ___:____     |\"\\/\"|    ~"
+	@echo "  ,'        \`.    \\  /"
+	@echo "  |  O        \\___/  |~~~"
+	@echo "   \\   ~~~            /"
+	@echo "    \\      ~~~        /"
+	@echo "     \`-._________.-\'"
+	@echo "        ~  ~  ~   ~"
+	@echo "~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~"
 
 help:
 	@echo "make		→ build images + run containers"
