@@ -58,7 +58,7 @@ services:
       - db_root_password
     networks:
       - oneiro_web
-    restart: no
+    restart: always
 
 volumes:
   wordpress_files:
