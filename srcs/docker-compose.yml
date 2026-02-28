@@ -85,6 +85,7 @@ secrets:
   wp_admin_password:
     file: /home/${USER}/Documents/secrets/wp_admin_password.txt
 
+# Network definition
 networks:
   oneiro_web:
     driver: bridge

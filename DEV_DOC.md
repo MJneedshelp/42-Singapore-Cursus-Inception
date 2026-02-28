@@ -52,7 +52,16 @@ These commands are already subsumed in the Makefile. You can use these if you wa
 1. docker exec: Used to execute a command in a running Docker container. Especially useful for debugging inside the container. ```docker exec -it {container_name} bash``` to get a bash shell inside the container (this was really useful hahaha)
 1. docker logs: Used to view the logs for a Docker container. Especially useful for debugging (print the steps in your shell scripts!)
 
-## Identify where the project data is stored and how it persists
+## Project data storage and persistence
+1. "Both named volumes must store their data inside /home/login/data on the host machine." according to the subject
+2. docker-compose.yml file | volumes section | volume location on host machine:
+	- wordpress files: /home/${USER}/data/wordpress_files
+	- mariadb files: /home/${USER}/data/wordpress_db
+2. location of the data in the containers: 
+	- wordpress container volume: /var/www/html
+	- mariadb container volume: /var/lib/mysql
+3. Since the data is stored in volumes that are mounted to the host machine, the data persists even if the containers are stopped or removed. When the containers are run again, they will use the same volumes, and the data will be available as it was before.
+4. To remove the data in the volumes, use ```make clean``` to remove the containers and volumes
 
 
 
@@ -73,11 +82,6 @@ These commands are already subsumed in the Makefile. You can use these if you wa
 
 
 
-
-- dockerfile (build)-> docker image (run)-> docker container
-- dockerfile -> use to build a docker image. Like instructions to build the the docker image
-- docker image -> becomes a container when the image is run. Is a running instance of the image. Runs as an - isolated process on the host machine but shares the host's operating system kernel
-- docker container -> running instance of the docker image
 
 
 
@@ -89,10 +93,9 @@ PID 1
 
 
 
-Source:
-- https://www.docker.com/blog/docker-best-practices-choosing-between-run-cmd-and-entrypoint/
+
 - Installing wp-cli: https://wp-cli.org/#installing
-- Volumes vs bind mounts: https://docs.docker.com/reference/compose-file/volumes/
+
 
 
 

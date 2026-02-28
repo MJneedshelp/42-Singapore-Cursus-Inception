@@ -65,5 +65,10 @@ A container is a form of OS-level virtualisation. Rather than emulating the enti
     - https://docs.docker.com/engine/network
 1. Docker Volumes vs Bind Mounts:
     - https://docs.docker.com/engine/storage/volumes/
+    - https://docs.docker.com/reference/compose-file/volumes/
 1. What is an LEMP stack:
     - https://www.geeksforgeeks.org/websites-apps/what-is-lemp-stack/
+1. Choosing between CMD and ENTRYPOINT in Dockerfile:
+    - https://www.docker.com/blog/docker-best-practices-choosing-between-run-cmd-and-entrypoint/
+1. Installing wp-cli:
+    - https://wp-cli.org/#installing
