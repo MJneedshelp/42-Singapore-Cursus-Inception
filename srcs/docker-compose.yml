@@ -76,14 +76,14 @@ volumes:
       device: /home/${USER}/data/wordpress_db
       o: bind
 
-# MJ: update the filepaths later when you transfer environments
+# File path for the secret files
 secrets:
   db_password:
-    file: ../secrets/db_password.txt
+    file: /home/mintan/Documents/secrets/db_password.txt
   db_root_password:
-    file: ../secrets/db_root_password.txt
+    file: /home/mintan/Documents/secrets/db_root_password.txt
   wp_admin_password:
-    file: ../secrets/wp_admin_password.txt
+    file: /home/mintan/Documents/secrets/wp_admin_password.txt
 
 networks:
   oneiro_web:

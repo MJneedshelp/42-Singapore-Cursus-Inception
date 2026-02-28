@@ -1,11 +1,4 @@
-• USER_DOC.md — User documentation This file must explain, in clear and simple
-terms, how an end user or administrator can:
-◦ Understand what services are provided by the stack.
-◦ Start and stop the project.
-◦ Access the website and the administration panel.
-◦ Locate and manage credentials.
-◦ Check that the services are running correctly.
-
+# Useful Information for Users
 ## Services provided by the stack
 Inception is a **LEMP** stack, which stands for Linux, NGINX, MySQL/MariaDB and PHP. It is a popular web service stack used to host dynamic websites and web applications. Each component of the LEMP stack serves a specific purpose:
 - **L - Linux**: The operating system that provides the foundation for the stack. It manages hardware resources and provides a stable environment for the other components to run.
@@ -14,7 +7,7 @@ Inception is a **LEMP** stack, which stands for Linux, NGINX, MySQL/MariaDB and 
 - **P - PHP**: A server-side scripting language that is used to create dynamic web pages. In this project, PHP is used to process the requests for the WordPress application. It interacts with the MariaDB database to retrieve and store data, and it generates the HTML content that is sent back to the clients through NGINX. The PHP-FPM (FastCGI Process Manager) is used to manage the PHP processes and improve the performance of the application.
 - **WordPress**: A popular content management system (CMS) that allows users to create and manage websites easily. It is built on top of PHP and uses a MariaDB database to store content and settings. In this project, WordPress is used as the application layer of the stack, allowing users to create and manage their website content through a user-friendly interface. It connects to the MariaDB database to store and retrieve data, and it relies on NGINX to serve the web pages to the clients.
 
-# Docker in a nutshell
+## Docker in a nutshell
 - **Dockerfile**: A text file that contains instructions for building a Docker image. It defines the base image, the commands to run, and the files to copy into the image.
 - **Docker image**: A lightweight, standalone, and executable package that includes everything needed to run a piece of software, including the code, runtime, libraries, and dependencies. It is created from a Dockerfile and can be shared and distributed.
 - **Docker container**: A running instance of a Docker image. It is an isolated environment that runs on the host machine and shares the host's operating system kernel. Each container has its own filesystem, network, and process space, allowing it to run independently from other containers and the host system.
@@ -33,69 +26,37 @@ Inception is a **LEMP** stack, which stands for Linux, NGINX, MySQL/MariaDB and 
 | make clean | remove containers + volumes |
 | make fclean | remove containers + volumes + images |
 | make re | fclean + all |
+| make ps | check the status of the containers for this project |
 
 ## Accessing the website and the administration panel
-1. Website: https://localhost or https://mintan.42singapore.sg
-2. Admin panel: https://localhost/wp-admin or https://mintan.42singapore.sg/wp-admin
+1. **Website**: https://localhost or https://mintan.42singapore.sg
+	- It is normal to see a warning about a potential security risk when you access the website.
+	- The TLS certificate used in this project is self-signed, which means that it is not issued by a trusted certificate authority (CA)
+	- Click **Advanced** -> **Accept the Risk and Continue** to access the website
+2. **Admin panel**: https://localhost/wp-admin or https://mintan.42singapore.sg/wp-admin
 
 ## Configuring your Credentials
 1. Open the /srcs/.env file and update the following variables before the first run:
-	- WP_ADMIN_USER: WordPress admin username. This is the account that you will use to log in to the WordPress admin panel
-	- WP_ADMIN_EMAIL: WordPress admin email
-	- MYSQL_USER: DB admin username. This is the account that WordPress will use to connect to the database.
-2.  Adjust the credentials in the secret files /home/mintan/Documents/secrets
-	- wp_admin_password.txt: WordPress admin password
-	- db_password.txt: DB admin password
-	- db_root_password.txt: DB root password. This is the password used by the root user to access the database
+	- **WP_ADMIN_USER**: WordPress admin username. This is the account that you will use to log in to the WordPress admin panel
+	- **WP_ADMIN_EMAIL**: WordPress admin email
+	- **MYSQL_USER**: DB admin username. This is the account that WordPress will use to connect to the database.
+2.  Adjust the credentials in the secret files /home/mintan/Documents/secrets or update the secret file paths in the docker-compose.yml file to point to the correct location of the secret files:
+	- **wp_admin_password.txt**: WordPress admin password
+	- **db_password.txt**: DB admin password
+	- **db_root_password.txt**: DB root password. This is the password used by the root user to access the database
 
 ## Checking that the services are running correctly
+1. Run ```make ps``` to check the status of the containers for this project. You should see that all the containers are up and running
+2. If you're using vs code, I find the **Container Tools** extension to be very helpful in visualising the containers, the images and the networks
+3. You can also check the logs for each container using the command ```docker logs {container_name}``` to see if there are any errors or issues with the services
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# NGINX
-	# used as a reverse proxy and to redirect requests from the clients to the appropriate origin server
-	# responses generated by the origin server is also sent back to the client via reverse proxy
-	# reverse proxy can also act as a load balancer when it decides which backend server handles the request. May be based on # factors such as server availability, server load, geographic location etc
-	# caching - frequently accessed content can be cached and served directly from the reverse proxy rather then from the backend servers
-	# security - can mask the origin server's identity, hiding the IP address from the client -> increase difficulty for attackers to target the server directly
-	# Secure sockets layer (SSL) encryption - encryption and decryption can happen on the reverse proxy layer rather than on the origin server
-	# reverse proxy -> positioned in front of the origin servers; protects the origin servers from the clients
-	# forward proxy -> positioned in front of the clients; protects the clients from the internet
-	# in this case, NGINX acts as the public entry point. Accepts requests from port 443 using TLS v1.3 / TLS v1.2
-
-
-
-
-docker build: Used to build a Docker image from a Dockerfile.
-docker run: Used to run a Docker container based on a Docker image.
-docker pull: Used to pull a Docker image from a registry, such as Docker Hub.
-docker push: Used to push a Docker image to a registry.
-docker ps: Used to list the running Docker containers on a system.
-docker stop: Used to stop a running Docker container.
-docker rm: Used to remove a Docker container.
-docker rmi: Used to remove a Docker image.
-docker exec: Used to execute a command in a running Docker container.
-docker logs: Used to view the logs for a Docker container.
-	
+## Other useful commands (imo)
+The commands are already subsumed in the Makefile. You can use these if you want to control the containers individually.
+1. docker build: Used to build a Docker image from a Dockerfile.
+1. docker run: Used to run a Docker container based on a Docker image.
+1. docker ps: Used to list the running Docker containers on a system.
+1. docker stop: Used to stop a running Docker container.
+1. docker rm: Used to remove a Docker container.
+1. docker rmi: Used to remove a Docker image.
+1. docker exec: Used to execute a command in a running Docker container. Especially useful for debugging inside the container. ```docker exec -it {container_name} bash``` to get a bash shell inside the container (this was really useful hahaha)
+1. docker logs: Used to view the logs for a Docker container. Especially useful for debugging (print the steps in your shell scripts!)
