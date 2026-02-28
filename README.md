@@ -17,15 +17,21 @@ hardware; it includes virtual CPU, virtual memory and a guest OS. I.e. everythin
 have as well.
 
 #### Docker
-A container is a form of OS-level virtualisation. Rather than emulating the 
-
-
+A container is a form of OS-level virtualisation. Rather than emulating the entire machine, it shares the host OS kernel and isolates the application processes from the rest of the system. The container runs as a process on the host with isolation mechanisms provided by the OS. It is more lightweight than a VM, as it does not require a full guest OS to run.
 
 ![VM vs Docker](/images/Docker-vs-VM.png)
 
-
+| Factors | Virtual Machines | Docker Containers |
+|--------:|-----------------:|------------------:|
+| **Boot Time** | Minutes | Seconds |
+| **Availability** | Ready-made VMs are not widely available | Pre-built containers can be found in various registries |
+| **Resource Usage** | High, as each VM requires its own OS | Low, as containers share the host OS kernel |
+| **Storage** | Might be a few GBs to tens of GBs | Typically a few MBs to a few hundred MBs |
+| **Operating System** | Each VM can run a different OS | All containers share the same OS kernel |
+| **Use Cases** | Suitable for running multiple different OSes on the same hardware, or for applications that require strong isolation | Ideal for microservices, application deployment, and environments where resource efficiency is important |
 
 ## Instructions
+
 
 
 
