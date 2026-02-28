@@ -1,6 +1,6 @@
 NAME=inception
 START_MESSAGE= $(NAME) is up. "An idea is like a virus"
-COMPOSE = docker compose -p $(NAME)
+COMPOSE = docker compose -p $(NAME) -f $(COMPOSE_FILE)
 COMPOSE_FILE = srcs/docker-compose.yml
 DATA_DIR = /home/mintan/data
 DATA_DIR_WORDPRESS = /home/mintan/data/wordpress_files
@@ -21,38 +21,37 @@ all: $(DATA_DIR) build up print_art_alive
 
 # Build the docker images
 build:
-	$(COMPOSE) -f $(COMPOSE_FILE) build
+	$(COMPOSE) build
 
 # Start the containers. -d to start in detached mode to run the containers
 # in the background
 up:
-	$(COMPOSE) -f $(COMPOSE_FILE) up -d
+	$(COMPOSE) up -d
 
 # Remove containers + networks but preserve the volumes
 down: print_art_dead
-	$(COMPOSE) -f $(COMPOSE_FILE) down
+	$(COMPOSE) down
 
 # Stop running the containers without removing them. Think "pause"
 stop:
-	$(COMPOSE) -f $(COMPOSE_FILE) stop
+	$(COMPOSE) stop
 
 # Remove containers + networks + volumes
-# root-owned files can be left behind by the containers, so we
-# escalate when deleting the host data directory to avoid
-# "permission denied" errors.
 clean:
-	$(COMPOSE) -f $(COMPOSE_FILE) down -v
+	$(COMPOSE) down -v
 	sudo rm -rf $(DATA_DIR)
 
 # Clean + remove images related to the project
-# use sudo when removing the data tree for the same reason as
-# the `clean` target above.
 fclean:
-	$(COMPOSE) -f $(COMPOSE_FILE) down -v --rmi all --remove-orphans
+	$(COMPOSE) down -v --rmi all --remove-orphans
 	sudo rm -rf $(DATA_DIR)
 
 # fclean then make all
 re: fclean all
+
+# Docker Compose Process Status
+ps:
+	$(COMPOSE) ps
 
 print_art_alive:
 	@echo "       ."
@@ -74,10 +73,11 @@ help:
 	@echo "make		→ build images + run containers"
 	@echo "make down	→ stop and remove containers"
 	@echo "make build	→ build the docker images"
-	@echo "make stop	→ stop the containers \(pause\)"
+	@echo "make stop	→ stop the containers (pause)"
 	@echo "make clean	→ remove containers + volumes"
 	@echo "make fclean	→ remove containers + volumes + images"
 	@echo "make re		→ fclean + all"
+	@echo "make ps		→ check the status of the containers for this project"
 
 .PHONY: all build up down stop clean fclean re print_art_alive print_art_dead help
 

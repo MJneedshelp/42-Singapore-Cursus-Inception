@@ -35,9 +35,20 @@ Inception is a **LEMP** stack, which stands for Linux, NGINX, MySQL/MariaDB and 
 | make re | fclean + all |
 
 ## Accessing the website and the administration panel
-1. The website can be accessed at https://localhost or https://mintan.42singapore.sg
-2. The WordPress administration panel can be accessed at https://localhost/wp-admin or https://mintan.42singapore.sg/wp-admin
+1. Website: https://localhost or https://mintan.42singapore.sg
+2. Admin panel: https://localhost/wp-admin or https://mintan.42singapore.sg/wp-admin
 
+## Configuring your Credentials
+1. Open the /srcs/.env file and update the following variables before the first run:
+	- WP_ADMIN_USER: WordPress admin username. This is the account that you will use to log in to the WordPress admin panel
+	- WP_ADMIN_EMAIL: WordPress admin email
+	- MYSQL_USER: DB admin username. This is the account that WordPress will use to connect to the database.
+2.  Adjust the credentials in the secret files /home/mintan/Documents/secrets
+	- wp_admin_password.txt: WordPress admin password
+	- db_password.txt: DB admin password
+	- db_root_password.txt: DB root password. This is the password used by the root user to access the database
+
+## Checking that the services are running correctly
 
 
 
