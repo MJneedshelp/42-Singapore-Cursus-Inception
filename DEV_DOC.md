@@ -24,17 +24,36 @@ DEV_DOC.md — Developer documentation This file must describe how a developer c
 
 
 
-## Build and launch the project using the Makefile and Docker Compose
-The **Makefile** provides a convenient way to manage the Docker containers and images for this project. It includes commands to build the images, run the containers, stop the containers, and clean up the resources. The Makefile abstracts away the underlying Docker commands, making it easier for developers to manage the project without needing to remember the specific Docker commands.
+## Using the Makefile and Docker Compose
+- **Makefile**: provides a convenient way to manage the Docker containers and images for this project. It includes commands to build the images, run the containers, stop the containers, and clean up the resources. The Makefile abstracts away the underlying Docker commands, making it easier for developers to manage the project without needing to remember the specific Docker commands.
+- **Docker Compose**: is a tool that allows you to define and manage multi-container Docker applications. It uses a YAML file (docker-compose.yml) to configure the services, networks, and volumes for the application. In this project, Docker Compose is used to orchestrate the NGINX, WordPress, and MariaDB containers, allowing them to communicate with each other and share resources as needed. The docker-compose.yml file defines the configuration for each service, including the image to use, the ports to expose, the environment variables, the volumes to mount, and the secrets to use.
+- **make help**: see the available commands
 
+| Command | Description |
+| --- | --- |
+| make all | build images + run containers |
+| make down | stop and remove containers |
+| make build | build the docker images |
+| make stop | stop containers (pause) |
+| make clean | remove containers + volumes |
+| make fclean | remove containers + volumes + images |
+| make re | fclean + all |
+| make ps | check the status of the containers for this project |
 
+- **Other useful commands**: These commands are already subsumed in the Makefile. You can use these if you want to control the containers individually.
 
-
-
-## Use relevant commands to manage the containers and volumes
-
+These commands are already subsumed in the Makefile. You can use these if you want to control the containers individually.
+1. docker build: Used to build a Docker image from a Dockerfile.
+1. docker run: Used to run a Docker container based on a Docker image.
+1. docker ps: Used to list the running Docker containers on a system.
+1. docker stop: Used to stop a running Docker container.
+1. docker rm: Used to remove a Docker container.
+1. docker rmi: Used to remove a Docker image.
+1. docker exec: Used to execute a command in a running Docker container. Especially useful for debugging inside the container. ```docker exec -it {container_name} bash``` to get a bash shell inside the container (this was really useful hahaha)
+1. docker logs: Used to view the logs for a Docker container. Especially useful for debugging (print the steps in your shell scripts!)
 
 ## Identify where the project data is stored and how it persists
+
 
 
 

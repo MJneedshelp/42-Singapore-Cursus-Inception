@@ -2,9 +2,9 @@ NAME=inception
 START_MESSAGE= $(NAME) is up. "An idea is like a virus"
 COMPOSE = docker compose -p $(NAME) -f $(COMPOSE_FILE)
 COMPOSE_FILE = srcs/docker-compose.yml
-DATA_DIR = /home/mintan/data
-DATA_DIR_WORDPRESS = /home/mintan/data/wordpress_files
-DATA_DIR_DB = /home/mintan/data/wordpress_db
+DATA_DIR = /home/$(USER)/data
+DATA_DIR_WORDPRESS = /home/$(USER)/data/wordpress_files
+DATA_DIR_DB = /home/$(USER)/data/wordpress_db
 
 
 .DEFAULT_GOAL := all

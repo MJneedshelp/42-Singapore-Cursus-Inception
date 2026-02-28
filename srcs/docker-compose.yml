@@ -79,11 +79,11 @@ volumes:
 # File path for the secret files
 secrets:
   db_password:
-    file: /home/mintan/Documents/secrets/db_password.txt
+    file: /home/${USER}/Documents/secrets/db_password.txt
   db_root_password:
-    file: /home/mintan/Documents/secrets/db_root_password.txt
+    file: /home/${USER}/Documents/secrets/db_root_password.txt
   wp_admin_password:
-    file: /home/mintan/Documents/secrets/wp_admin_password.txt
+    file: /home/${USER}/Documents/secrets/wp_admin_password.txt
 
 networks:
   oneiro_web:
