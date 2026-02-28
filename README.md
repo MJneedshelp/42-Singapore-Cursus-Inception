@@ -65,3 +65,5 @@ A container is a form of OS-level virtualisation. Rather than emulating the enti
     - https://docs.docker.com/engine/network
 1. Docker Volumes vs Bind Mounts:
     - https://docs.docker.com/engine/storage/volumes/
+1. What is an LEMP stack:
+    - https://www.geeksforgeeks.org/websites-apps/what-is-lemp-stack/
