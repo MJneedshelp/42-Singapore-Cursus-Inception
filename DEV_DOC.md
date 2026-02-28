@@ -12,8 +12,18 @@ DEV_DOC.md — Developer documentation This file must describe how a developer c
 - especially the cert generation portion
 
 ### NGINX
+1. NGINX is a web server that is used as a reverse proxy in this project. A reverse proxy is a server that sits in front of one or more backend servers and forwards client requests to those servers.
+2. Workflow (general): Client -> NGINX (port 443) -> Wordpress (port 9000), processed by php-fpm -> NGINX -> Client
+	1. Client sends a request to NGINX via port 443 (e.g., https://localhost:443). This is done via TLS v1.3 or TLS v1.2, which means that the communication between the client and NGINX is encrypted. Requests that are not using HTTPS are redirected to HTTPS.
+	2. To use TLS, a TLS certificate is required. In this project, a self-signed TLS certificate is generated using OpenSSL via the **setup.sh** script when the container is run.
+	3. When a request is received, NGINX decrypts the request and forwards it to the Wordpress container via port 9000 through the docker network.
+	4. The Wordpress container contains a php-fpm service that listens for requests on port 9000. When it receives the request from NGINX, it processes the request and generates a response.
+	5. The response is sent back to NGINX, which then encrypts the response and sends it back to the client via port 443.
 
-
+**Note**: 
+1. Transport Layer Security (TLS) is a cryptographic protocol that provides secure communication over a computer network. It is the successor to Secure Sockets Layer (SSL) and is widely used to secure web traffic. HTTPS (Hypertext Transfer Protocol Secure) is the secure version of HTTP, which uses TLS to encrypt the communication between the client and the server. When a client makes a request to an HTTPS URL, the communication is encrypted using TLS, ensuring that the data transmitted between the client and the server is secure and cannot be intercepted by attackers. 
+2. A TLS certificate is used to prove "I am who I say I am". In normal circumstances, a TLS certificate is issued by a trusted certificate authority (CA) and is used to establish a secure connection between a client and a server. The certificate contains information about the identity of the server, as well as the public key that is used for encryption. When a client connects to a server using HTTPS, the server presents its TLS certificate to the client. The client then verifies the certificate against a list of trusted CAs to ensure that it is valid and that the server can be trusted. If the certificate is valid, the client and server can establish a secure connection using TLS. In this project, a self-signed TLS certificate is generated using OpenSSL. A self-signed certificate is a TLS certificate that is signed by the same entity that created it, rather than by a trusted certificate authority (CA). Self-signed certificates can be used for testing and development purposes, but they are not trusted by clients by default, as they do not have a trusted CA to verify their authenticity. When a client connects to a server using a self-signed certificate, the client will typically display a warning message indicating that the certificate is not trusted. 
+3. NGINX sends the request to php-fpm using the FastCGI protocol. FastCGI is a protocol for interfacing interactive programs with a web server. It is an extension of the Common Gateway Interface (CGI) that provides better performance by keeping the application processes running and reusing them for multiple requests, rather than starting a new process for each request as in CGI. In this project, NGINX is configured to use FastCGI to communicate with the php-fpm service in the Wordpress container. When a request for a PHP file is received, NGINX forwards the request to php-fpm using FastCGI, which processes the request and generates a response that is sent back to NGINX.
 
 ### WordPress
 

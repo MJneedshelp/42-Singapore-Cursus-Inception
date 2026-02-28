@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# mj -> check if you want to store the cert path somewhere
-
 # Create directory to store the SSL cert
 mkdir -p /etc/nginx/ssl
 
