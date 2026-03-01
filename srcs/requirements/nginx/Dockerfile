@@ -1,5 +1,5 @@
 # Start from Debian base (mj to check the version later)
-FROM debian:trixie
+FROM debian:bookworm
 
 # Install NGINX and OpenSSL. apt clean to clear all the cached installation files
 # Shell form used instead of exec form cos of && for variable expansion. Reduce layers

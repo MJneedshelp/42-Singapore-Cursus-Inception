@@ -1,5 +1,5 @@
-# Start from Debian base (mj to check the version later)
-FROM debian:trixie
+# Start from Debian base
+FROM debian:bookworm
 
 # Install system dependencies. apt clean to clear all the cached installation
 # Shell form used instead of exec form cos of && for variable expansion. Reduce layers
