@@ -8,17 +8,19 @@ DEV_DOC.md — Developer documentation This file must describe how a developer c
 
 
 ## Set up the environment from scratch (prerequisites, configuration files, secrets)
-- explain each of the containers in detail
-- especially the cert generation portion
+In general, each of the containers will have a Dockerfile that defines how to build the image for that container, and a shell script that is executed when the container is run. The last line of the shell script is usually the command to start the main service for that container (e.g., NGINX, php-fpm, MariaDB) as PID 1. Services where the information is required is complete, are usually downloaded during build time within the Dockerfile. Services that require information that is only available during runtime (e.g., database credentials) are downloaded during runtime within the shell script. This is because the Dockerfile is executed during build time, while the shell script is executed during runtime when the container is run. The Dockerfile is used to set up the environment for the container, including installing necessary packages and dependencies, while the shell script is used to configure the services and start them when the container is run.
 
 ### NGINX
 1. NGINX is a web server that is used as a reverse proxy in this project. A reverse proxy is a server that sits in front of one or more backend servers and forwards client requests to those servers.
-2. Workflow (general): Client -> NGINX (port 443) -> Wordpress (port 9000), processed by php-fpm -> NGINX -> Client
+2. Workflow (general): Client -> NGINX (port 443) -> Wordpress (port 9000), processed by php-fpm -> NGINX -> Client:
 	1. Client sends a request to NGINX via port 443 (e.g., https://localhost:443). This is done via TLS v1.3 or TLS v1.2, which means that the communication between the client and NGINX is encrypted. Requests that are not using HTTPS are redirected to HTTPS.
 	2. To use TLS, a TLS certificate is required. In this project, a self-signed TLS certificate is generated using OpenSSL via the **setup.sh** script when the container is run.
 	3. When a request is received, NGINX decrypts the request and forwards it to the Wordpress container via port 9000 through the docker network.
 	4. The Wordpress container contains a php-fpm service that listens for requests on port 9000. When it receives the request from NGINX, it processes the request and generates a response.
 	5. The response is sent back to NGINX, which then encrypts the response and sends it back to the client via port 443.
+3. Configuration files and scripts:
+	- nginx.conf: the main configuration file for NGINX. It includes the configuration for the server, which listens on port 443 and forwards requests to the Wordpress container on port 9000. It also includes the configuration for TLS, specifying the location of the TLS certificate and private key.
+	- setup.sh: a shell script that is executed when the NGINX container is run. It generates a self-signed TLS certificate using OpenSSL and saves it to the appropriate location for NGINX to use.
 
 **Note**: 
 1. Transport Layer Security (TLS) is a cryptographic protocol that provides secure communication over a computer network. It is the successor to Secure Sockets Layer (SSL) and is widely used to secure web traffic. HTTPS (Hypertext Transfer Protocol Secure) is the secure version of HTTP, which uses TLS to encrypt the communication between the client and the server. When a client makes a request to an HTTPS URL, the communication is encrypted using TLS, ensuring that the data transmitted between the client and the server is secure and cannot be intercepted by attackers. 
@@ -26,13 +28,16 @@ DEV_DOC.md — Developer documentation This file must describe how a developer c
 3. NGINX sends the request to php-fpm using the FastCGI protocol. FastCGI is a protocol for interfacing interactive programs with a web server. It is an extension of the Common Gateway Interface (CGI) that provides better performance by keeping the application processes running and reusing them for multiple requests, rather than starting a new process for each request as in CGI. In this project, NGINX is configured to use FastCGI to communicate with the php-fpm service in the Wordpress container. When a request for a PHP file is received, NGINX forwards the request to php-fpm using FastCGI, which processes the request and generates a response that is sent back to NGINX.
 
 ### WordPress
-
-
+1. WordPress is a content management system (CMS) that is used to create and manage websites. In this project, it is used as the backend server that generates the responses to the client requests.
+2. Configuration files and scripts:
+	- start.sh: a shell script that is executed when the WordPress container is run. It downloads the the latest version of WordPress and creates the wp-config.php file using the environment variables and secrets provided in the docker-compose.yml file. It also downloads WordPress core files and sets it up with the admin credentials provided in the secrets. Finally, it starts the php-fpm service to listen for requests from NGINX.
+	- wp-config.php: the configuration file for WordPress. It contains the database connection details, including the database host, username, password, and database name. In this project, these details are provided via environment variables that are set in the docker-compose.yml file.
 
 ### MariaDB
-
-
-
+1. MariaDB is a relational database management system (RDBMS) that is used to store the data for the WordPress site. It is a fork of MySQL and is compatible with MySQL.
+2. Configuration files and scripts:
+	- init.sh: a shell script that is executed when the MariaDB container is run. It installs the MariaDB database and starts the MariaDB server. On the first run, it initializes the database by creating a new database and a new user with the credentials provided in the secrets. It also grants the necessary permissions to the user to access the database. This is done by starting a temporary MariaDB server with networking disabled, which allows us to execute SQL commands to set up the database and user without exposing the server to external connections. After setting up the database and user using the init.sql script, it stops the temporary server and starts the main MariaDB server to listen for requests from WordPress.
+	- init.sql: a SQL script that is used to initialize the database on the first run. It creates a new database and a new user with the credentials provided in the secrets, and grants the necessary permissions to the user to access the database.
 
 ## Using the Makefile and Docker Compose
 - **Makefile**: provides a convenient way to manage the Docker containers and images for this project. It includes commands to build the images, run the containers, stop the containers, and clean up the resources. The Makefile abstracts away the underlying Docker commands, making it easier for developers to manage the project without needing to remember the specific Docker commands.
@@ -98,26 +103,3 @@ These commands are already subsumed in the Makefile. You can use these if you wa
 PID 1
 - each container only has 1 process tree
 - usually you'll want to run a long running service like NGINX or php-fpm as PID 1
-
-
-
-
-
-
-- Installing wp-cli: https://wp-cli.org/#installing
-
-
-
-
-
-# NGINX
-	# used as a reverse proxy and to redirect requests from the clients to the appropriate origin server
-	# responses generated by the origin server is also sent back to the client via reverse proxy
-	# reverse proxy can also act as a load balancer when it decides which backend server handles the request. May be based on # factors such as server availability, server load, geographic location etc
-	# caching - frequently accessed content can be cached and served directly from the reverse proxy rather then from the backend servers
-	# security - can mask the origin server's identity, hiding the IP address from the client -> increase difficulty for attackers to target the server directly
-	# Secure sockets layer (SSL) encryption - encryption and decryption can happen on the reverse proxy layer rather than on the origin server
-	# reverse proxy -> positioned in front of the origin servers; protects the origin servers from the clients
-	# forward proxy -> positioned in front of the clients; protects the clients from the internet
-	# in this case, NGINX acts as the public entry point. Accepts requests from port 443 using TLS v1.3 / TLS v1.2
-

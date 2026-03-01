@@ -31,12 +31,5 @@ RUN chmod +x /start.sh
 # Expose only port 9000 for communicating with the NGINX container
 EXPOSE 9000
 
-# mj to fill in later
+# Run the start up script. php-fpm is executed in the start up script
 CMD ["/start.sh"]
-
-
-
-
-
-
-#mj to check if there's a need to login to wordpress client
